@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Website for OrangePi
+        </title>
+
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <body>
+            <h1>
+                Monitoring
+            </h1>
+
+            <div class="navbar">
+                <a class="active" href="{{ url_for('index') }}">
+                    Главная
+                </a>
+
+                <a class="active" href="{{ url_for('planning') }}">
+                    Полив
+                </a>
+
+                <a class="active" href="{{ url_for('calendar') }}">
+                    Календарь
+                </a>
+
+                <div class="dropdown">
+                    <button class="dropbtn1" onclick="myFunction1()">
+                        Инфо
+                    <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content" id="myDropdown1">
+                        <a href="{{ url_for('robots') }}">
+                            Роботы
+                        </a>
+                        <a href="{{ url_for('plants') }}">
+                            Растения
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <h2>
+                Растения
+            </h2>
+
+            <table class="table">
+                <tr  class="table__header">
+                    {% for header in headings %}
+                    <th class="table__hcell">{{ header }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for row in data %}
+                <tr class="table__row">
+                    {% for cell in row %}
+                    <td class="table__rcell">{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+
+
+        <script>
+
+        function myFunction1()
+        {
+            document.getElementById("myDropdown1").classList.toggle("show");
+        }
+
+        window.onclick = function(e)
+        {
+
+            if (!e.target.matches('.dropbtn1')) {
+            var myDropdown1 = document.getElementById("myDropdown1");
+                if (myDropdown1.classList.contains('show')) {
+                    myDropdown1.classList.remove('show');
+                }
+            }
+        }
+
+        </script>
+
+        </body>
+    </head>
+</html>

@@ -1,0 +1,232 @@
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>
+            Website for OrangePi
+        </title>
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+    </head>
+    <body>
+        <h1>
+            Monitoring
+        </h1>
+      <div id="border">
+        <svg id="canvas" width="600" height="600">
+        </svg>
+        <label id="coords"></label>
+        <label id="length"></label>
+        <input class="btn_plan" type="button" onclick="saveChargePoints()" value="Далее">
+
+      </div>
+
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+      <script>
+        let polygon = JSON.parse('{{p|tojson}}');
+        let scale = 200;
+        console.log(polygon);
+        console.log(JSON.parse('{{pp|tojson}}'));
+        console.log(JSON.parse('{{ppp|tojson}}'));
+
+        function round_2(num) {
+            return Math.round(num*100)/100;
+        }
+
+        async function saveChargePoints() {
+            var svg = document.getElementById("canvas");
+
+            line1.parentNode.removeChild(line1);
+            line2.parentNode.removeChild(line2);
+            text1.parentNode.removeChild(text1);
+            text2.parentNode.removeChild(text2);
+
+            var serializer = new XMLSerializer();
+            var source = serializer.serializeToString(svg);
+
+            if(!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)){
+                source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+            if(!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)){
+                source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+            }
+
+            source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+            let blob = new Blob([source], { type: "image/svg+xml" });
+            var data = new FormData();
+            data.append('file', blob , 'file2.svg');
+            data.append('ch_points', JSON.stringify(chargingPoints));
+
+            let response = await fetch('/upload3', {
+                method: 'POST',
+                body: data
+            });
+
+            window.location.href = "{{ url_for('planning_on_map')}}";
+        }
+
+
+        function inside(rect, point, polygon) {
+            const x = point.x/scale;
+            const y = (rect.bottom - 9 - point.y)/scale;
+            let isIn = false;
+
+            for (let k = 0; k < polygon.length; k++) {
+                var poly = polygon[k].slice(0, polygon[k].length-1);
+                const n = poly.length;
+                let x1, x2, y1, y2;
+
+                x1 = poly[n-1][0];
+                y1 = poly[n-1][1];
+
+                for (let i = 0; i < n; ++i) {
+                    x2 = poly[i][0];
+                    y2 = poly[i][1];
+
+                    if (y < y1 !== y < y2 && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1) {
+                        isIn = !isIn;
+                    }
+                    x1 = x2;
+                    y1 = y2;
+                }
+                if (isIn) return true;
+            }
+            return isIn;
+        }
+
+        const canvas = document.querySelector('#canvas');
+        var svgimg = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        svgimg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/static/file.svg");
+        canvas.append(svgimg);
+        svgimg = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        svgimg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/static/file1.svg");
+        canvas.append(svgimg);
+        svgimg = document.createElementNS("http://www.w3.org/2000/svg", "image");
+        svgimg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/static/file2.svg");
+        canvas.append(svgimg);
+
+        var rect = canvas.getBoundingClientRect();
+        for(var i = 0; i < polygon.length-1; i++) {
+            var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+            line.setAttribute("stroke", "blue");
+            line.setAttribute('x1', polygon[i][0]/100*scale);
+            line.setAttribute('y1', rect.bottom-107-(polygon[i][1]/100*scale));
+            line.setAttribute('x2', polygon[i+1][0]/100*scale);
+            line.setAttribute('y2', rect.bottom-107-(polygon[i+1][1]/100*scale));
+            canvas.append(line);
+            //var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            //circle.setAttributeNS(null, 'cx', polygon[i][0]/100*scale);
+            //circle.setAttributeNS(null, 'cy', rect.bottom-107-(polygon[i][1]/100*scale));
+            //circle.setAttributeNS(null, 'r', 2);
+            //circle.setAttributeNS(null, 'style', 'fill: blue; stroke: blue; stroke-width: 1px;');
+            //canvas.append(circle);
+        }
+
+        class Vector2D{
+          constructor(x,y){
+            this.x = x;
+            this.y = y;
+          }
+        }
+
+        let initialPosOfLine;
+        let finalPosOfLine;
+        let drawingOverCanvas = false;
+        let lineIndex = 0;
+
+        let points = [];
+        let chargingPoints = [];
+
+        var rect = canvas.getBoundingClientRect();
+        let line1 = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line1.setAttribute('id','line_1');
+        line1.setAttribute("stroke", "lightgray");
+        line1.setAttribute('x1', rect.left-115);
+
+        let line2 = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line2.setAttribute('id','line_2');
+        line2.setAttribute("stroke", "lightgray");
+        line2.setAttribute('y1', rect.bottom);
+
+        let text1 = document.createElementNS('http://www.w3.org/2000/svg', "text");
+        text1.setAttribute('style', "font: 10px 'Arial';");
+        text1.setAttribute('fill', "#000000");
+        text1.setAttribute('font', "10px 'Arial'");
+        text1.setAttribute('text-anchor', "middle");
+        text1.setAttribute('stroke', "none");
+
+        let text2 = document.createElementNS('http://www.w3.org/2000/svg', "text");
+        text2.setAttribute('style', "font: 10px 'Arial';");
+        text2.setAttribute('fill', "#000000");
+        text2.setAttribute('font', "10px 'Arial'");
+        text2.setAttribute('text-anchor', "middle");
+        text2.setAttribute('stroke', "none");
+
+
+        canvas.addEventListener('mousedown', event => {
+            var rect = canvas.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+
+            initialPosOfLine = new Vector2D(x , y);
+
+            drawToPos(initialPosOfLine);
+        });
+
+
+        canvas.addEventListener('mousemove', event => {
+          var rect = canvas.getBoundingClientRect();
+          var x = event.clientX - rect.left;
+          var y = event.clientY - rect.top;
+          drawLines(rect, new Vector2D(x, y));
+        });
+
+
+        function drawToPos(initial){
+            var rect = canvas.getBoundingClientRect();
+            if (!inside(rect, initial, polygon)){
+                var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttributeNS(null, 'cx', initial.x);
+                circle.setAttributeNS(null, 'cy', initial.y);
+                circle.setAttributeNS(null, 'r', 2);
+                circle.setAttributeNS(null, 'style', 'fill: green; stroke: green; stroke-width: 1px;');
+                canvas.append(circle);
+
+                points = [round_2(initial.x/scale), round_2((rect.bottom - 9 - initial.y)/scale)];
+                chargingPoints.push(points);
+            }
+        }
+
+
+        function drawLines(rect, current){
+            line1.setAttribute('y1', current.y);
+            line1.setAttribute('x2', current.x);
+            line1.setAttribute('y2', current.y);
+            line1.setAttribute('x1', rect.left-rect.right);
+            line2.setAttribute('x1', current.x);
+            line2.setAttribute('x2', current.x);
+            line2.setAttribute('y2', current.y);
+
+            text1.setAttribute('x', (current.x)/2 - 10);
+            text1.setAttribute('y', current.y - 2);
+            text1.textContent = (round_2(current.x/scale)).toString();
+
+            var t = 'rotate(-90,' + (current.x-2).toString() + ',' + ((rect.bottom + current.y-100)/2 - 5).toString() + ')';
+            text2.setAttribute('x', current.x - 2);
+            text2.setAttribute('y', (rect.bottom + current.y-100)/2 - 5);
+            text2.setAttribute('transform', t);
+            text2.textContent = (round_2((rect.bottom - 107 - (event.clientY - rect.top))/scale)).toString();
+
+            canvas.append(line1);
+            canvas.append(line2);
+            canvas.append(text1);
+            canvas.append(text2);
+        }
+      </script>
+    </body>
+    </html>

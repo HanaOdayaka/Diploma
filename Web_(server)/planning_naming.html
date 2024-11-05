@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Website for OrangePi
+        </title>
+
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <body>
+            <h1>
+                Monitoring
+            </h1>
+
+            <h2>
+                Планирование
+            </h2>
+
+            <div class="container_planning" id="container_planning">
+                <div class="container_null" id="container_planning_null">
+                    <label for="name">Введите количество растений:</label>
+                    <input type="number" id="num_of_plants" name="name" min="1" max="31" size="10" placeholder="1" />
+                </div>
+                <button class="btn" id="next_button">Подтвердить</button>
+            </div>
+
+            <div class="container_planning" id="container_planning_2">
+                <div class="container_null" id="container_planning_null">
+                    <label for="name">Введите названия растений:</label>
+                </div>
+            </div>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+        <script>
+
+        var js =jQuery.noConflict();
+        document.getElementById("container_planning_2").style.visibility = "hidden";
+        let numberOfDivs = 0;
+
+        document.getElementById('next_button').addEventListener("click", nextButton);
+
+        function nextButton() {
+            document.getElementById("container_planning_2").style.visibility = "visible";
+            numberOfDivs = document.getElementById("num_of_plants").value;
+            const element = document.getElementById("container_planning");
+            element.remove();
+            var $mainContainer = js("#container_planning_2");
+            for (let i=0; i < numberOfDivs; i++) {
+                var n = i+1;
+                var newDiv = js('<div class="container_planning_child" id="container_planning'+ i.toString() + '"></div>');
+                $mainContainer.append(newDiv);
+                var $mainContainerСhild = js('#container_planning' + i.toString());
+                var newDiv = js('<label class="text_planning">' + n.toString() + '. </label>');
+                $mainContainerСhild.append(newDiv);
+                var newDiv = js('<input type="text" id="input0' + i.toString() + '" required minlength="3" maxlength="18" size="20">');
+                $mainContainerСhild.append(newDiv);
+            }
+
+            var newDiv = js('<button class="btn" id="next_page_button">Продолжить</button>');
+            $mainContainer.append(newDiv);
+
+            document.getElementById('next_page_button').addEventListener("click", updateButton);
+
+            function updateButton() {
+                let req = new XMLHttpRequest();
+
+                req.onreadystatechange = () => {
+                    if (req.readyState == XMLHttpRequest.DONE) {
+                        console.log(req.responseText);
+                    }
+                };
+                var input = document.getElementById("name");
+                req.open("PUT", "https://api.jsonbin.io/v3/b/65f88285266cfc3fde9a434f", true);
+                req.setRequestHeader("Content-Type", "application/json");
+                req.setRequestHeader('X-Access-Key', '$2a$10$URLCktrLOPS5OTOI4N4GguKYaHHOIfGPSye6ScFo8qTlz1y92UJQm');
+
+                let string = '{"plants_list": [';
+                for (let i=0; i < numberOfDivs; i++) {
+                    var inputTextField = document.getElementById('input0' + i.toString()).value;
+                    if (i == numberOfDivs-1) {
+                        string = string.concat('"'+inputTextField+'"');}
+                    else {
+                        string = string.concat('"'+inputTextField+'",');}
+                }
+                string = string.concat(']}');
+                req.send(string);
+                window.location.href = "{{ url_for('plane')}}";}
+        }
+
+        </script>
+
+        </body>
+    </head>
+</html>

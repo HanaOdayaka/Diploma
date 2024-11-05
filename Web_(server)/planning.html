@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Website for OrangePi
+        </title>
+
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <body>
+            <h1>
+                Monitoring
+            </h1>
+
+            <h2>
+                Планирование
+            </h2>
+
+            <div class="container_plane" id="container_planning">
+            </div>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+        <script>
+
+        var js = jQuery.noConflict();
+        let numberOfDivs;
+        let plant_list;
+
+        let watering = [];
+        let watering_per_flo = [];
+
+        js(document).ready(function(){
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = () => {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    console.log((JSON.parse(req.responseText)).plants_list.length);
+                    console.log((JSON.parse(req.responseText)).plants_list);
+                    plant_list = (JSON.parse(req.responseText)).plants_list;
+                    numberOfDivs = (JSON.parse(req.responseText)).plants_list.length;
+                    console.log(numberOfDivs);
+
+                    var $mainContainer = js("#container_planning");
+                    for (let i=0; i < numberOfDivs; i++) {
+                        var newDiv = js('<div class="container_plane_child" id="container_planning'+ i.toString() + '"></div>');
+                        $mainContainer.append(newDiv);
+                        var $mainContainerСhild = js('#container_planning' + i.toString());
+                        var newDiv = js('<label class="text_planning">' + plant_list[i] + ': поливать </label>');
+                        $mainContainerСhild.append(newDiv);
+                        var newDiv = js('<input type="number" id="input0' + i.toString() + '" min="1" max="20" size="10" placeholder="1">');
+                        $mainContainerСhild.append(newDiv);
+                        var newDiv = js('<label class="text_planning" id="lbl0' + i.toString() + '"> раз в </label>');
+                        $mainContainerСhild.append(newDiv);
+
+
+                        var newDiv = js('<input type="number" id="input1' + i.toString() + '" min="1" max="31" size="10" placeholder="1">');
+                        $mainContainerСhild.append(newDiv);
+                        var newDiv = js('<label class="text_planning" id="lbl1' + i.toString() + '"> день.</label>');
+                        $mainContainerСhild.append(newDiv);
+
+                    }
+
+                    for (let i=0; i < numberOfDivs; i++) {
+                        var inputTextField = document.getElementById('input0' + i.toString());
+
+                        inputTextField.oninput = function() {
+                            var n = this.value;
+                            var outputTextField = document.getElementById('lbl0' + i.toString());
+                            if (n == '2' || n == '3' || n == '4' || n == '22' || n == '23' || n == '24'){outputTextField.textContent = " раза в ";}
+                            else{outputTextField.textContent = " раз в ";}
+                        };
+
+                        var inputTextField_1 = document.getElementById('input1' + i.toString());
+                        inputTextField_1.onchange = function() {
+                            var n = this.value;
+                            var outputTextField_1 = document.getElementById('lbl1' + i.toString());
+                            if (n == '1' || n == '21'|| n == '31'){outputTextField_1.textContent = " день.";}
+                            else if (n == '2' || n == '3' || n == '4' || n == '22' || n == '23' || n == '24'){outputTextField_1.textContent = " дня.";}
+                            else{outputTextField_1.textContent = " дней.";}
+                        };
+                    }
+
+                    var newDiv = js('<button class="btn_planning" id="next_button">Продолжить</button>');
+                    $mainContainer.append(newDiv);
+
+                    document.getElementById('next_button').addEventListener("click", updateButton);
+
+                    async function updateButton() {
+                        for (let i=0; i < numberOfDivs; i++) {
+                            var inputTextField = (document.getElementById('input0' + i.toString())).value;
+                            var inputTextField_1 = (document.getElementById('input1' + i.toString())).value;
+
+                            watering_per_flo = [inputTextField, inputTextField_1];
+                            watering.push(watering_per_flo);
+                        }
+
+                        var data = new FormData();
+                        data.append('watering', JSON.stringify(watering));
+
+                        let response = await fetch('/upload4', {
+                            method: 'POST',
+                            body: data
+                        });
+
+                        window.location.href = "{{ url_for('cont')}}";
+                    }
+
+
+                }
+            };
+
+            req.open("GET", "https://api.jsonbin.io/v3/b/65f88285266cfc3fde9a434f?meta=false" , true);
+            req.setRequestHeader("Content-Type", "application/json");
+            req.setRequestHeader('X-Access-Key', '$2a$10$URLCktrLOPS5OTOI4N4GguKYaHHOIfGPSye6ScFo8qTlz1y92UJQm');
+            req.send();
+        });
+
+        </script>
+
+        </body>
+    </head>
+</html>

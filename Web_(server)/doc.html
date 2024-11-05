@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>
+            Website for OrangePi
+        </title>
+
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <body>
+            <h1>
+                Monitoring
+            </h1>
+
+            <h2>
+                Информация
+            </h2>
+
+<form>
+    <div class="container_doc" id="container_doc">
+
+    <label for="name">Имя:</label>
+    <input type="text" name="name"><br><br>
+    <label for="age">Возраст:</label>
+    <input type="number" name="age" min="1" max="10"><br><br>
+    <label for="light">Свет:</label>
+    <select name="light" id="light">
+        <option></option>
+        <option value="light_0">Прямые лучи</option>
+        <option value="light_1">Рассеянный свет</option>
+        <option value="light_2">Полутень</option>
+        <option value="light_3">Тень</option>
+    </select><br><br>
+    <label for="watering">Полив:</label>
+    <select name="watering" id="watering">
+        <option></option>
+        <option value="watering_0">Хорошее подсушивание земли</option>
+        <option value="watering_1">Легкое подсушивание земли</option>
+        <option value="watering_2">Постоянно влажная земля</option>
+        <option value="watering_3">Уровень вода в поддоне</option>
+    </select><br><br>
+    <label for="humidity">Влажность:</label>
+    <select name="humidity" id="humidity">
+        <option></option>
+        <option value="humidity_0">Обычная температура</option>
+        <option value="humidity_1">Регулярное опрыскивание</option>
+    </select><br><br>
+    <label for="message">Доп. информация:</label><br>
+    <textarea name="message" id="message" cols="30" rows="4"></textarea><br><br>
+    <input type="submit" value="Продолжить">
+
+    </div>
+</form>
+
+        <script>
+
+        function myFunction()
+        {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        function myFunction1()
+        {
+            document.getElementById("myDropdown1").classList.toggle("show");
+        }
+
+        window.onclick = function(e)
+        {
+            if (!e.target.matches('.dropbtn')) {
+            var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                    myDropdown.classList.remove('show');
+                }
+            }
+
+            if (!e.target.matches('.dropbtn1')) {
+            var myDropdown1 = document.getElementById("myDropdown1");
+                if (myDropdown1.classList.contains('show')) {
+                    myDropdown1.classList.remove('show');
+                }
+            }
+        }
+
+        </script>
+
+</body>
+</html>

@@ -1,0 +1,630 @@
+body
+{
+    background: gray;
+    background-image: url("back.jpg");
+    color: white;
+}
+
+
+h1
+{
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 42px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+h2
+{
+    color: rgba(44, 143, 90, 0.8);
+    font-family: 'Raleway', bold;
+    font-size: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+iframe
+{
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+
+#rectangle
+{
+    background: #4CAF50;
+    width: 95vw;
+    height: 2px;
+}
+
+
+.table
+{
+    align-self: center;
+    align-content: center;
+    margin: 0 auto;
+    border-spacing: 0px;
+    color: black;
+    width:80%;
+}
+
+
+.table__row:nth-child(even)
+{
+    color: black;
+}
+
+
+.table__header
+{
+    background-color: rgba(44, 143, 90, 0.456);
+}
+
+
+.table__hcell
+{
+    font-size: medium;
+    font-family: 'Raleway', bold;
+    border-bottom: 2px solid rgba(44, 143, 90, 0.456);
+    text-align: center;
+    padding: 8px;
+}
+
+
+.table__hcell:first-child
+{
+    border-bottom-left-radius: 30px;
+    border-top-left-radius:30px;
+}
+
+
+.table__hcell:last-child
+{
+    border-bottom-right-radius: 30px;
+    border-top-right-radius:30px;
+}
+
+
+.table__rcell
+{
+    border-bottom: 2px solid rgba(44, 143, 90, 0.456);
+    border-left: 1px solid rgba(44, 143, 90, 0.456);
+	border-right: 1px solid rgba(44, 143, 90, 0.456);
+	font-family: 'Raleway';
+	font-size: medium;
+    text-align: center;
+    padding: 8px;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+}
+
+
+.table__rcell:first-child
+{
+	border-left: none;
+}
+
+
+.table__rcell:last-child
+{
+	border-right: none;
+}
+
+#canvas
+{
+    display: grid;
+    align-self: center;
+    border: 1px solid #000;
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+}
+
+#coords
+{
+    display: inline-block;
+    align-self: center;
+}
+
+.map
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+
+.main
+{
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 80vw;
+}
+
+
+.video
+{
+    margin: 0 auto;
+    text-align: center;
+    width: 80vw;
+}
+
+
+.navbar
+{
+    background-color: rgb(44, 143, 90);
+    display: inline-block;
+    font-family: 'Raleway';
+    height: 6vh;
+    overflow: hidden;
+    width: 96vw;
+}
+
+
+.navbar a
+{
+    color: white;
+    float: left;
+    font-size: 24px;
+    text-align: center;
+    text-decoration: none;
+    padding: calc(3vh - 14px) 0px;
+    width: 10vw;
+}
+
+
+.dropdown
+{
+    float: left;
+    overflow: hidden;
+}
+
+
+.dropdown .dropbtn
+{
+    background-color: inherit;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-size: 24px;
+    margin: 0;
+    outline: none;
+    padding: calc(3vh - 14px) 0px;
+    text-align: center;
+    width: 10vw;
+}
+
+.btn_plan
+{
+    background-color: rgb(44, 143, 90);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-size: 24px;
+    outline: none;
+    padding: 5px;
+    text-align: center;
+    width: 14vw;
+    margin-left: 1050px;
+}
+
+.btn
+{
+    background-color: rgb(44, 143, 90);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-size: 24px;
+    outline: none;
+    margin-top: 20px;
+    padding: 5px;
+    text-align: center;
+    width: 14vw;
+    position: sticky;
+    margin-left: 200px;
+}
+
+.btn_planning
+{
+
+    background-color: rgb(44, 143, 90);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-size: 24px;
+    outline: none;
+    margin-top: 20px;
+    padding: 5px;
+    text-align: center;
+    width: 14vw;
+    position: sticky;
+    margin-left: 400px;
+}
+
+
+.dropdown .dropbtn1
+{
+    background-color: inherit;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-size: 24px;
+    margin: 0;
+    outline: none;
+    padding: calc(3vh - 14px) 0px;
+    text-align: center;
+    width: 10vw;
+}
+
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus
+{
+    background-color: #46bd4a;
+}
+
+
+.navbar a:hover, .dropdown:hover .dropbtn1, .dropbtn1:focus
+{
+    background-color: #46bd4a;
+}
+
+
+.dropdown-content
+{
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    display: none;
+    min-width: 12vh;
+    position: absolute;
+    z-index: 1;
+}
+
+.dropdown-content a
+{
+    color: black;
+    display: block;
+    float: none;
+    font-size: 24px;
+    padding: calc(3vh - 14px) 20px;
+    text-align: left;
+    text-decoration: none;
+}
+
+
+.dropdown-content a:hover
+{
+    background-color: #ddd;
+}
+
+.show
+{
+    display: block;
+}
+
+
+.container
+{
+    float: left;
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 200px;
+    gap: 30px;
+    margin-left: 100px;
+    padding: 50px;
+    padding-top: 20px;
+    text-align: center;
+    width: 200px;
+}
+
+.container_doc
+{
+    margin: auto;
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    padding: 50px;
+    padding-top: 20px;
+    text-align: left;
+    width: 400px;
+}
+
+.container_plane
+{
+    margin: auto;
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 200px;
+    gap: 10px;
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    width: 600px;
+}
+
+.container_planning
+{
+    margin: auto;
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 200px;
+    gap: 10px;
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    width: 400px;
+}
+
+.container_plane_child
+{
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    margin-left: 5px;
+    margin-right: 15px;
+    margin-top: 7px;
+    text-align: center;
+    width: 570px;
+    display: inline-block;
+}
+
+.container_planning_child
+{
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 7px;
+    text-align: center;
+    width: 350px;
+    display: inline-block;
+}
+
+.container_null
+{
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+    width: 400px;
+    display: inline-block;
+}
+
+.text_planning
+{
+    color: rgb(0, 0, 0);
+}
+
+
+.container2
+{
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 200px;
+    gap: 30px;
+    margin-left: 500px;
+    padding: 50px;
+    padding-top: 20px;
+    text-align: center;
+    width: 200px;
+}
+
+
+.box
+{
+    color: white;
+    border: 3px solid rgb(44, 143, 90);
+    background-color: #46bd4a;
+    border-radius: .5em;
+    cursor: move;
+    float:left;
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+}
+
+
+.box.over
+{
+    border: 3px dashed rgb(0, 0, 0);
+}
+
+.box2
+{
+    color: white;
+    border: 3px solid rgb(44, 143, 90);
+    background-color: #46bd4a;
+    border-radius: .5em;
+    cursor: move;
+    float:left;
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+}
+
+
+.box2.over2
+{
+    border: 3px dashed rgb(0, 0, 0);
+}
+
+#border{
+    position: relative;
+    justify-content: space-between;
+}
+
+#border #len{
+    position: absolute;
+    right: 270px;
+    top: 10px;
+    color: rgba(44, 143, 90, 0.95);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+}
+
+
+
+
+
+
+
+/*variables*/
+:root {
+  --white: #fff;
+  --main: #eaedf0;
+  --accent: rgba(44, 143, 90, 0.85);
+  --accent-2: #ebedf0;
+}
+.container_calendar {
+
+  display: inline-block;
+  border-radius: 35px;
+  padding: 0 1em;
+  margin-top: 2em;
+
+  margin: auto;
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.95);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 200px;
+    gap: 10px;
+    padding: 50px;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    text-align: center;
+    width: 400px;
+    align-items: center;
+}
+header {
+  margin: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.header-display {
+  display: flex;
+  align-items: center;
+}
+.header-display p {
+  color: rgba(44, 143, 90, 0.95);
+  margin: 0px;
+  font-size: 1.5rem;
+  word-spacing: 0.5rem;
+}
+pre {
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+.days,
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: auto;
+  padding: 0 20px;
+  justify-content: space-between;
+}
+.week div,
+.days div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+  width:2.5em;
+  border-radius: 100%;
+}
+
+.days div:hover {
+  background: var(--accent-2);
+  color: rgba(44, 143, 90, 0.85);
+  cursor: pointer;
+}
+.week div {
+  opacity: 0.5;
+}
+
+.current-date {
+  background-color: rgba(44, 143, 90, 0.85);
+  color: var(--white);
+}
+.display-selected {
+ width: 400px;
+  margin-bottom: 10px;
+  padding: 0px 0px;
+  text-align: center;
+}
+
+.display-selected p{
+  width: 400px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.line_calendar{
+    background-color: rgba(44, 143, 90, 0.65);
+    color:rgba(44, 143, 90, 0.65);
+    border: none;
+    border-top: 2px double rgba(44, 143, 90, 0.65);
+}
+
+.id{
+    background-color: white;
+    margin: auto;
+    border: 3px dashed rgb(44, 143, 90);
+    border-radius: .5em;
+    color: rgba(44, 143, 90, 0.85);
+    font-family: 'Raleway', bold;
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 200px;
+    gap: 10px;
+    padding: 5px;
+    text-align: center;
+    width: 500px;
+}

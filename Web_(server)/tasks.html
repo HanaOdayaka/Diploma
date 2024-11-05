@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Website for OrangePi
+        </title>
+
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <body>
+            <h1>
+                Monitoring
+            </h1>
+
+            <div class="navbar">
+
+                <a class="active" href="{{ url_for('index') }}">
+                    Главная
+                </a>
+
+                <a class="active" href="{{ url_for('planning') }}">
+                    Полив
+                </a>
+
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="myFunction()">
+                        Камеры
+                    <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content" id="myDropdown">
+                        <a href="{{ url_for('video') }}">
+                            ip-Камера
+                        </a>
+                        <a href="#">
+                            Камера (роботы)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="dropbtn1" onclick="myFunction1()">
+                        Состояние
+                    <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content" id="myDropdown1">
+                        <a href="{{ url_for('robots') }}">
+                            Роботы
+                        </a>
+                        <a href="{{ url_for('plants') }}">
+                            Растения
+                        </a>
+                    </div>
+                </div>
+
+                <a class="active" href="{{ url_for('tasks') }}">
+                    Задачи
+                </a>
+
+            </div>
+
+            <h2>
+                Задания
+            </h2>
+
+
+            <div class="container">
+                <h3>
+                    Robot 1
+                </h3>
+                <div draggable="true" class="box" id="id01">Зарядка</div>
+                <div draggable="true" class="box" id="id02">Растение А</div>
+                <div draggable="true" class="box" id="id03">Растение Б</div>
+            </div>
+
+            <div class="container2">
+                <h3>
+                    Robot 2
+                </h3>
+                <div draggable="true" class="box2" id="id11">Зарядка</div>
+                <div draggable="true" class="box2" id="id12">Растение А</div>
+                <div draggable="true" class="box2" id="id13">Растение Б</div>
+            </div>
+
+
+
+
+
+
+
+        <script>
+
+        let req = new XMLHttpRequest();
+
+        req.onreadystatechange = () => {
+            if (req.readyState == XMLHttpRequest.DONE) {
+                console.log(req.responseText);
+            }
+        };
+
+        req.open("GET", "https://api.jsonbin.io/v3/b/65be36c1dc746540189fb26c", true);
+        req.setRequestHeader('X-Access-Key', '$2a$10$URLCktrLOPS5OTOI4N4GguKYaHHOIfGPSye6ScFo8qTlz1y92UJQm');
+        req.send();
+
+        function myFunction()
+        {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        function myFunc()
+        {
+            document.getElementById("id01").classList.toggle("show");
+        }
+
+        function myFunction1()
+        {
+            document.getElementById("myDropdown1").classList.toggle("show");
+        }
+
+        window.onclick = function(e)
+        {
+            if (!e.target.matches('.dropbtn')) {
+            var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                    myDropdown.classList.remove('show');
+                }
+            }
+
+            if (!e.target.matches('.dropbtn1')) {
+            var myDropdown1 = document.getElementById("myDropdown1");
+                if (myDropdown1.classList.contains('show')) {
+                    myDropdown1.classList.remove('show');
+                }
+            }
+
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', (event) =>
+        {
+
+            function handleDragStart(e)
+            {
+                if (this.id == 'id01' || this.id == 'id02' || this.id == 'id03')
+                {
+                    this.style.opacity = '0.4';
+
+                    dragSrcEl = this;
+
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', this.innerHTML);
+                }
+            }
+
+            function handleDragEnd(e)
+            {
+                if (this.id == 'id01' || this.id == 'id02' || this.id == 'id03')
+                {
+                    this.style.opacity = '1';
+
+                    items.forEach(function (item)
+                    {
+                        item.classList.remove('over');
+                    });
+                }
+            }
+
+            function handleDragOver(e)
+            {
+                if (this.id == 'id01' || this.id == 'id02' || this.id == 'id03')
+                {
+                    e.preventDefault();
+
+                    return false;
+                }
+            }
+
+            function handleDragEnter(e)
+            {
+                if (this.id == 'id01' || this.id == 'id02' || this.id == 'id03')
+                {
+                    if (dragSrcEl.id == 'id01' || dragSrcEl.id == 'id02' || dragSrcEl.id == 'id03')
+                    {
+                        this.classList.add('over');
+                    }
+                }
+            }
+
+            function handleDragLeave(e)
+            {
+                if (this.id == 'id01' || this.id == 'id02' || this.id == 'id03')
+                {
+                    this.classList.remove('over');
+                }
+            }
+
+            function handleDrop(e)
+            {
+                if (this.id == 'id01' || this.id == 'id02' || this.id == 'id03')
+                {
+                    e.stopPropagation();
+
+                    if (dragSrcEl !== this && (dragSrcEl.id == 'id01' || dragSrcEl.id == 'id02' || dragSrcEl.id == 'id03'))
+                    {
+                        dragSrcEl.innerHTML = this.innerHTML;
+                        this.innerHTML = e.dataTransfer.getData('text/html');
+
+                        let req = new XMLHttpRequest();
+
+                        req.onreadystatechange = () => {
+                            if (req.readyState == XMLHttpRequest.DONE) {
+                                console.log(req.responseText);
+                            }
+                        };
+                        var input = document.getElementById("name");
+                        req.open("PUT", "https://api.jsonbin.io/v3/b/65be36c1dc746540189fb26c", true);
+                        req.setRequestHeader("Content-Type", "application/json");
+                        req.setRequestHeader('X-Access-Key', '$2a$10$URLCktrLOPS5OTOI4N4GguKYaHHOIfGPSye6ScFo8qTlz1y92UJQm');
+                        req.send('{"tasks": [{"task_num" : "1", "task" : "' + document.getElementById('id01').innerHTML +
+                                     '"},{"task_num" : "2", "task" : "' + document.getElementById('id02').innerHTML +
+                                     '"},{"task_num" : "3", "task" : "' + document.getElementById('id03').innerHTML + '"}]}');
+                    }
+
+                    return false;
+                }
+            }
+
+            let items = document.querySelectorAll('.container .box');
+            items.forEach(function(item)
+            {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('dragenter', handleDragEnter);
+                item.addEventListener('dragleave', handleDragLeave);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('drop', handleDrop);
+            });
+
+
+            function handleDragStart1(e)
+            {
+                if (this.id == 'id11' || this.id == 'id12' || this.id == 'id13')
+                {
+                    this.style.opacity = '0.4';
+
+                    dragSrcEl = this;
+
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', this.innerHTML);
+                }
+            }
+
+            function handleDragEnd1(e)
+            {
+                if (this.id == 'id11' || this.id == 'id12' || this.id == 'id13')
+                {
+                    this.style.opacity = '1';
+
+                    items1.forEach(function (item1)
+                    {
+                        item1.classList.remove('over2');
+                    });
+                }
+            }
+
+            function handleDragOver1(e)
+            {
+                if (this.id == 'id11' || this.id == 'id12' || this.id == 'id13')
+                {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+
+            function handleDragEnter1(e)
+            {
+                if (this.id == 'id11' || this.id == 'id12' || this.id == 'id13')
+                {
+                    if (dragSrcEl.id == 'id11' || dragSrcEl.id == 'id12' || dragSrcEl.id == 'id13')
+                    {
+                        this.classList.add('over2');
+                    }
+                }
+            }
+
+            function handleDragLeave1(e)
+            {
+                if (this.id == 'id11' || this.id == 'id12' || this.id == 'id13')
+                {
+                    this.classList.remove('over2');
+                }
+            }
+
+            function handleDrop1(e)
+            {
+                if (this.id == 'id11' || this.id == 'id12' || this.id == 'id13')
+                {
+                    e.stopPropagation();
+
+                    if (dragSrcEl !== this && (dragSrcEl.id == 'id11' || dragSrcEl.id == 'id12' || dragSrcEl.id == 'id13'))
+                    {
+                        dragSrcEl.innerHTML = this.innerHTML;
+                        this.innerHTML = e.dataTransfer.getData('text/html');
+
+                        let req = new XMLHttpRequest();
+
+                        req.onreadystatechange = () => {
+                            if (req.readyState == XMLHttpRequest.DONE) {
+                                console.log(req.responseText);
+                            }
+                        };
+                        var input = document.getElementById("name");
+                        req.open("PUT", "https://api.jsonbin.io/v3/b/65c00382266cfc3fde85c597", true);
+                        req.setRequestHeader("Content-Type", "application/json");
+                        req.setRequestHeader('X-Access-Key', '$2a$10$URLCktrLOPS5OTOI4N4GguKYaHHOIfGPSye6ScFo8qTlz1y92UJQm');
+                        req.send('{"tasks": [{"task_num" : "1", "task" : "' + document.getElementById('id11').innerHTML +
+                                     '"},{"task_num" : "2", "task" : "' + document.getElementById('id12').innerHTML +
+                                     '"},{"task_num" : "3", "task" : "' + document.getElementById('id13').innerHTML + '"}]}');
+                    }
+
+                    return false;
+                }
+            }
+
+
+            let items1 = document.querySelectorAll('.container2 .box2');
+            items1.forEach(function(item1)
+            {
+                item1.addEventListener('dragstart', handleDragStart1);
+                item1.addEventListener('dragover', handleDragOver1);
+                item1.addEventListener('dragenter', handleDragEnter1);
+                item1.addEventListener('dragleave', handleDragLeave1);
+                item1.addEventListener('dragend', handleDragEnd1);
+                item1.addEventListener('drop', handleDrop1);
+            });
+
+
+
+
+
+
+
+        });
+
+
+
+
+
+        </script>
+
+        </body>
+    </head>
+</html>

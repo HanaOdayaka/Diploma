@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Website for OrangePi
+        </title>
+
+        <link rel = "stylesheet" href = "/static/style.css" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+        <body>
+            <h1>
+                Monitoring
+            </h1>
+
+            <div class="navbar">
+                <a class="active" href="{{ url_for('index') }}">
+                    Главная
+                </a>
+
+                <a class="active" href="{{ url_for('planning') }}">
+                    Полив
+                </a>
+
+                <a class="active" href="{{ url_for('calendar') }}">
+                    Календарь
+                </a>
+
+                <div class="dropdown">
+                    <button class="dropbtn1" onclick="myFunction1()">
+                        Инфо
+                    <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content" id="myDropdown1">
+                        <a href="{{ url_for('robots') }}">
+                            Роботы
+                        </a>
+                        <a href="{{ url_for('plants') }}">
+                            Растения
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h2>
+                Планирование
+            </h2>
+
+            <div class="container_calendar">
+            <div class="calendar">
+            <header>
+              <div class="header-display">
+                <p class="display">""</p>
+
+              </div>
+
+            </header>
+            <hr class="line_calendar" size="1" width="70%">
+            <div class="week">
+              <div>Пн</div>
+              <div>Вт</div>
+              <div>Ср</div>
+              <div>Чт</div>
+              <div>Пт</div>
+              <div>Сб</div>
+              <div>Вс</div>
+            </div>
+            <div class="days">
+                <!--days will be filled here-->
+            </div>
+          </div>
+          <hr class="line_calendar" size="1" width="70%">
+           <div class="display-selected">
+                <p class="selected"></p>
+              </div>
+            </div>
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+        <script>
+
+        function myFunction1()
+        {
+            document.getElementById("myDropdown1").classList.toggle("show");
+        }
+
+        window.onclick = function(e)
+        {
+
+            if (!e.target.matches('.dropbtn1')) {
+            var myDropdown1 = document.getElementById("myDropdown1");
+                if (myDropdown1.classList.contains('show')) {
+                    myDropdown1.classList.remove('show');
+                }
+            }
+        }
+
+        let display = document.querySelector(".display");
+        let days = document.querySelector(".days");
+        let previous = document.querySelector(".left");
+        let next = document.querySelector(".right");
+        let selected = document.querySelector(".selected");
+
+        let date = new Date();
+
+        let year = date.getFullYear();
+        let month = date.getMonth();
+
+        function displayCalendar() {
+          const firstDay = new Date(year, month, 1);
+
+          const lastDay = new Date(year, month + 1, 0);
+
+          const firstDayIndex = firstDay.getDay(); //4
+
+          const numberOfDays = lastDay.getDate(); //31
+
+          let formattedDate = date.toLocaleString("en-US", {
+            month: "long",
+            year: "numeric"
+          });
+
+          display.innerHTML = `${formattedDate}`;
+
+          for (let x = 1; x <= firstDayIndex; x++) {
+            const div = document.createElement("div");
+            div.innerHTML += "";
+
+            days.appendChild(div);
+          }
+
+          for (let i = 1; i <= numberOfDays; i++) {
+            let div = document.createElement("div");
+            let currentDate = new Date(year, month, i);
+
+            div.dataset.date = currentDate.toDateString();
+
+            div.innerHTML += i;
+            days.appendChild(div);
+            if (
+              currentDate.getFullYear() === new Date().getFullYear() &&
+              currentDate.getMonth() === new Date().getMonth() &&
+              currentDate.getDate() === new Date().getDate()
+            ) {
+              div.classList.add("current-date");
+            }
+          }
+        }
+
+        // Call the function to display the calendar
+        displayCalendar();
+
+        function displaySelected() {
+          const dayElements = document.querySelectorAll(".days div");
+          dayElements.forEach((day) => {
+            day.addEventListener("click", (e) => {
+              const selectedDate = e.target.dataset.date;
+              selected.innerHTML = `Selected Date : ${selectedDate}`;
+            });
+          });
+        }
+        displaySelected();
+
+        </script>
+
+        </body>
+    </head>
+</html>
